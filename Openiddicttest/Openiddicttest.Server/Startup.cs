@@ -7,6 +7,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using OpenIddict.Abstractions;
+using OpenIddict.Core;
+using OpenIddict.EntityFrameworkCore.Models;
 using Openiddicttest.Server.Data;
 using System;
 using System.Collections.Generic;
@@ -41,11 +44,12 @@ namespace Openiddicttest.Server
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             // Register the Identity services.
-            services.AddDefaultIdentity<IdentityUser>(options =>
+            services.AddIdentity<IdentityUser,IdentityRole>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = true;
             })
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
 
             // Configure Identity to use the same JWT claims as OpenIddict instead
             // of the legacy WS-Federation claims it uses by default (ClaimTypes),
@@ -122,6 +126,7 @@ namespace Openiddicttest.Server
             {
                 app.UseDeveloperExceptionPage();
                 app.UseMigrationsEndPoint();
+                DbInit(app).GetAwaiter().GetResult();
             }
             else
             {
@@ -144,6 +149,50 @@ namespace Openiddicttest.Server
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
+        }
+
+        public async Task DbInit(IApplicationBuilder app)
+        {
+            var scope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope();
+            var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            await context.Database.EnsureCreatedAsync();
+
+            var manager = scope.ServiceProvider.GetRequiredService<OpenIddictApplicationManager<OpenIddictEntityFrameworkCoreApplication>>();
+
+            if (await manager.FindByClientIdAsync("balosar-blazor-client") is null)
+            {
+                await manager.CreateAsync(new OpenIddictApplicationDescriptor
+                {
+                    ClientId = "balosar-blazor-client",
+                    ConsentType = ConsentTypes.Explicit,
+                    DisplayName = "Blazor client application",
+                    Type = ClientTypes.Public,
+                    PostLogoutRedirectUris =
+                    {
+                        new Uri("https://localhost:44310/authentication/logout-callback")
+                    },
+                    RedirectUris =
+                    {
+                        new Uri("https://localhost:44310/authentication/login-callback")
+                    },
+                    Permissions =
+                    {
+                        Permissions.Endpoints.Authorization,
+                        Permissions.Endpoints.Logout,
+                        Permissions.Endpoints.Token,
+                        Permissions.GrantTypes.AuthorizationCode,
+                        Permissions.GrantTypes.RefreshToken,
+                        Permissions.ResponseTypes.Code,
+                        Permissions.Scopes.Email,
+                        Permissions.Scopes.Profile,
+                        Permissions.Scopes.Roles
+                    },
+                    Requirements =
+                    {
+                        Requirements.Features.ProofKeyForCodeExchange
+                    }
+                });
+            }
         }
     }
 }
