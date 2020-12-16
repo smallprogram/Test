@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,6 +12,8 @@ using OpenIddict.Abstractions;
 using OpenIddict.Core;
 using OpenIddict.EntityFrameworkCore.Models;
 using Openiddicttest.Server.Data;
+using Openiddicttest.Server.Models;
+using Openiddicttest.Server.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,10 +47,19 @@ namespace Openiddicttest.Server
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             // Register the Identity services.
-            services.AddIdentity<IdentityUser,IdentityRole>(options =>
-            {
-                options.SignIn.RequireConfirmedAccount = true;
-            })
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+             {
+                 options.SignIn.RequireConfirmedAccount = false;
+                 options.SignIn.RequireConfirmedEmail = false;
+                 options.SignIn.RequireConfirmedPhoneNumber = false;
+
+                 options.Password.RequireDigit = false;
+                 options.Password.RequireNonAlphanumeric = false;
+                 options.Password.RequiredLength = 6;
+                 options.Password.RequireLowercase = true;
+                 options.Password.RequireUppercase = false;
+
+             })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
@@ -115,8 +127,16 @@ namespace Openiddicttest.Server
                     options.UseAspNetCore();
                 });
 
+
+            services.AddTransient<IEmailSender, EmailSender>();
+            //services.AddTransient<ISmsSender, AuthMessageSender>();
+
+
             services.AddCors();
             services.AddControllersWithViews();
+            services.AddRazorPages();
+
+
 
         }
 
@@ -155,6 +175,7 @@ namespace Openiddicttest.Server
         {
             var scope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            await context.Database.EnsureDeletedAsync();
             await context.Database.EnsureCreatedAsync();
 
             var manager = scope.ServiceProvider.GetRequiredService<OpenIddictApplicationManager<OpenIddictEntityFrameworkCoreApplication>>();
