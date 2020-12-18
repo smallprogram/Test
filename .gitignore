@@ -5,3 +5,5 @@
 /Openiddicttest/.vs/Openiddicttest
 /Openiddicttest/Openiddicttest.Server/bin/Debug/net5.0
 /Openiddicttest/Openiddicttest.Server/obj
+/Openiddicttest/Openiddicttest.Client/bin/Debug/net5.0
+/Openiddicttest/Openiddicttest.Client/obj
