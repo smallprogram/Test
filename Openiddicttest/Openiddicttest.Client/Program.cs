@@ -44,7 +44,7 @@ namespace Openiddicttest.Client
             //{
             //    options.AuthenticationPaths.LogInPath = "https://localhost:5001/Identity/Account/Login";
             //});
-
+            
             builder.Services.AddHttpClient("OIDC.ServerAPI")
                 .ConfigureHttpClient(client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
                 .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
@@ -68,11 +68,10 @@ namespace Openiddicttest.Client
                 // For more information about this bug, visit https://github.com/dotnet/aspnetcore/issues/28344.
                 //
                 options.ProviderOptions.ResponseMode = "query";
-                options.AuthenticationPaths.RemoteRegisterPath = "https://localhost:5001/Identity/Account/Register";
-                options.AuthenticationPaths.LogInPath = "https://localhost:5001/Identity/Account/Login";
+                
+                //options.AuthenticationPaths.RemoteRegisterPath = "https://localhost:5001/Identity/Account/Register";
+                //options.AuthenticationPaths.LogInPath = "https://localhost:5001/Identity/Account/Login";
             });
-
-
             await builder.Build().RunAsync();
         }
     }

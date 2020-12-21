@@ -59,9 +59,13 @@ namespace Openiddicttest.Server
                  options.Password.RequireLowercase = true;
                  options.Password.RequireUppercase = false;
 
+                 
+
              })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
+
+
 
             // Configure Identity to use the same JWT claims as OpenIddict instead
             // of the legacy WS-Federation claims it uses by default (ClaimTypes),
@@ -203,6 +207,7 @@ namespace Openiddicttest.Server
                     {
                         new Uri("https://localhost:5002/authentication/login-callback")
                     },
+                    
                     Permissions =
                     {
                         Permissions.Endpoints.Authorization,

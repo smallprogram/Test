@@ -1,7 +1,16 @@
 ﻿@page "/authentication/{action}"
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
-<RemoteAuthenticatorView Action="@Action" />
+@inject IConfiguration Configuration
+<RemoteAuthenticatorView Action="@Action" ApplicationPaths="@RemotePath" />
 
 @code{
     [Parameter] public string Action { get; set; }
+
+    public RemoteAuthenticationApplicationPathsOptions RemotePath { set; get; } = new RemoteAuthenticationApplicationPathsOptions();
+
+
+    protected override void OnInitialized()
+    {
+        RemotePath.LogInPath = Configuration.GetSection("AuthenticationPaths").GetSection("RemoteLoginPath").Value;
+    }
 }
