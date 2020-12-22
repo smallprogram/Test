@@ -7,3 +7,10 @@
 /Openiddicttest/Openiddicttest.Server/obj
 /Openiddicttest/Openiddicttest.Client/bin/Debug/net5.0
 /Openiddicttest/Openiddicttest.Client/obj
+/OpenIddictTestBlazor/.vs/OpenIddictTestBlazor
+/OpenIddictTestBlazor/OpenIddictTestBlazor/Client/bin/Debug/net5.0
+/OpenIddictTestBlazor/OpenIddictTestBlazor/Client/obj
+/OpenIddictTestBlazor/OpenIddictTestBlazor/Server/bin/Debug/net5.0
+/OpenIddictTestBlazor/OpenIddictTestBlazor/Server/obj
+/OpenIddictTestBlazor/OpenIddictTestBlazor/Shared/bin/Debug/net5.0
+/OpenIddictTestBlazor/OpenIddictTestBlazor/Shared/obj
