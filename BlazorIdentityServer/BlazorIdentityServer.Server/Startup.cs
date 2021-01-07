@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace BlazorIdentityServer.Server
@@ -47,6 +48,22 @@ namespace BlazorIdentityServer.Server
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            // EF迁移数据库时需要用到程序集
+            // 使用EF做迁移时最后用PowerShell，而不是Package Manager Console，执行下列命令迁移
+            // 如果没有全局安装EFCore Tools是无法使用PowerShell执行迁移的。需要执行以下命令：
+            // dotnet tool install --global dotnet-ef
+            // 确保程序集中安装有Microsoft.EntityFrameworkCore.Design,如果没有请安装： dotnet add package Microsoft.EntityFrameworkCore.Design
+            // 开始执行迁移，-o可选生成位置：
+            // dotnet ef migrations add InitialIdentityServerPersistedGrantDbMigration -c PersistedGrantDbContext -o Data/Migrations/IdentityServer/PersistedGrantDb
+            // dotnet ef migrations add InitialIdentityServerConfigurationDbMigration -c ConfigurationDbContext -o Data/Migrations/IdentityServer/ConfigurationDb
+            // dotnet ef migrations add InitialAspNetCoreIdentityDbMigration -c ApplicationDbContext -o Data/Migrations/IdentityServer/AspNetCoreIdentityDb
+            // 更新数据库：
+            // dotnet ef database update InitialAspNetCoreIdentityDbMigration -c ApplicationDbContext
+            // dotnet ef database update InitialIdentityServerPersistedGrantDbMigration -c PersistedGrantDbContext
+            // dotnet ef database update InitialIdentityServerConfigurationDbMigration -c ConfigurationDbContext
+
+            var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
+
             services.AddIdentityServer(options =>
             {
                 // 为IdentityServer开启事件记录日志
@@ -70,11 +87,11 @@ namespace BlazorIdentityServer.Server
                 .AddAspNetIdentity<IdentityUser>()
                 .AddConfigurationStore(options =>
                 {
-                    options.ConfigureDbContext = b => b.UseSqlServer(connectionString);
+                    options.ConfigureDbContext = b => b.UseSqlServer(connectionString, sql => sql.MigrationsAssembly(migrationsAssembly));
                 })
                 .AddOperationalStore(options =>
                 {
-                    options.ConfigureDbContext = b => b.UseSqlServer(connectionString);
+                    options.ConfigureDbContext = b => b.UseSqlServer(connectionString, sql => sql.MigrationsAssembly(migrationsAssembly));
 
                     // this enables automatic token cleanup. this is optional.
                     options.EnableTokenCleanup = true;
