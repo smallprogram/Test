@@ -1,8 +1,11 @@
 using BlazorIdentityServer.Server.Data;
+using BlazorIdentityServer.Server.Services;
+using IdentityServer4.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -81,8 +84,12 @@ namespace BlazorIdentityServer.Server
                 options.EmitStaticAudienceClaim = true;  // ????
 
                 // 自定义各种URL
-                options.UserInteraction.LoginUrl = "";
-                options.UserInteraction.LogoutUrl = "";
+                options.UserInteraction = new UserInteractionOptions
+                {
+                    LogoutUrl = "/Account/Logout",
+                    LoginUrl = "/Account/Login",
+                    LoginReturnUrlParameter = "returnUrl"
+                };
             })
                 .AddAspNetIdentity<IdentityUser>()
                 .AddConfigurationStore(options =>
@@ -99,7 +106,11 @@ namespace BlazorIdentityServer.Server
                 // 证书
                 .AddDeveloperSigningCredential();
 
+
+            services.AddTransient<IEmailSender, EmailSender>();
+
             services.AddControllersWithViews();
+            services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -109,18 +120,22 @@ namespace BlazorIdentityServer.Server
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+
 
             app.UseRouting();
 
-
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.UseIdentityServer();
-            //app.UseAuthentication();
-            //app.UseAuthorization();
+            
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapRazorPages();
+                
             });
         }
     }
