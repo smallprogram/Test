@@ -23,7 +23,14 @@ namespace BlazorIdentityServer.Client
             {
                 // Configure your authentication provider options here.
                 // For more information, see https://aka.ms/blazor-standalone-auth
-                builder.Configuration.Bind("Local", options.ProviderOptions);
+                //builder.Configuration.Bind("Local", options.ProviderOptions);
+
+                options.ProviderOptions.Authority = "https://localhost:6001";
+                options.ProviderOptions.ClientId = "Blaozr_Client";
+                options.ProviderOptions.ResponseType = "code";
+                options.ProviderOptions.DefaultScopes.Clear();
+                options.ProviderOptions.DefaultScopes.Add("openid");
+                options.ProviderOptions.DefaultScopes.Add("profile");
             });
 
             await builder.Build().RunAsync();
