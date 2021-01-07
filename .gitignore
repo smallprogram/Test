@@ -14,3 +14,8 @@
 /OpenIddictTestBlazor/OpenIddictTestBlazor/Server/obj
 /OpenIddictTestBlazor/OpenIddictTestBlazor/Shared/bin/Debug/net5.0
 /OpenIddictTestBlazor/OpenIddictTestBlazor/Shared/obj
+/BlazorIdentityServer/.vs/BlazorIdentityServer
+/BlazorIdentityServer/BlazorIdentityServer.Client/bin/Debug/net5.0
+/BlazorIdentityServer/BlazorIdentityServer.Client/obj
+/BlazorIdentityServer/BlazorIdentityServer.Server/bin/Debug/net5.0
+/BlazorIdentityServer/BlazorIdentityServer.Server/obj
