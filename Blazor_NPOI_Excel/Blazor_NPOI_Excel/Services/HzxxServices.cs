@@ -22,7 +22,7 @@ namespace Blazor_NPOI_Excel.Services
             var httpclient = httpClientFactory.CreateClient();
             httpclient.DefaultRequestHeaders.Clear();
             httpclient.DefaultRequestHeaders.Add("Accept", "application/json, text/javascript, */*; q=0.01");
-            httpclient.DefaultRequestHeaders.Add("Accept-Encoding", "gzip, deflate, br");
+            httpclient.DefaultRequestHeaders.Add("Accept-Encoding", "deflate, br");
             httpclient.DefaultRequestHeaders.Add("Accept-Language", "keep-alive");
             //httpclient.DefaultRequestHeaders.Add("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
             httpclient.DefaultRequestHeaders.Add("Host", "www.bjzhenyuankeji.com:8115");
@@ -49,7 +49,7 @@ namespace Blazor_NPOI_Excel.Services
             //request.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/x-www-form-urlencoded");
             //request.Headers.Host = "www.bjzhenyuankeji.com:8115";
 
-            var requestContent = new StringContent(JsonSerializer.Serialize(requestbody), Encoding.UTF8, "application/x-www-form-urlencoded");
+            var requestContent = new StringContent("sign=GetHsryxxByYyid&yyid=16&btime=2021-01-14%2000%3A00%3A00&etime=2021-01-17%2023%3A59%3A59", Encoding.UTF8, "application/x-www-form-urlencoded");
 
 
             //var response = await httpclient.SendAsync(request);
@@ -57,6 +57,7 @@ namespace Blazor_NPOI_Excel.Services
 
             string result = await response.Content.ReadAsStringAsync();
 
+            // todo need class
             List<HS_HZXX> hS_HZXXes = JsonSerializer.Deserialize<List<HS_HZXX>>(result);
             return hS_HZXXes;
 
