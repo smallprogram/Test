@@ -1,5 +1,6 @@
 using Blazor_NPOI_Excel.Areas.Identity;
 using Blazor_NPOI_Excel.Data;
+using Blazor_NPOI_Excel.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -40,8 +41,10 @@ namespace Blazor_NPOI_Excel
             services.AddServerSideBlazor();
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
             services.AddDatabaseDeveloperPageExceptionFilter();
+            services.AddHttpClient();
             services.AddSingleton<WeatherForecastService>();
             services.AddSingleton<ExcelServices>();
+            services.AddSingleton<HzxxServices>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -11,6 +11,8 @@ namespace Blazor_NPOI_Excel.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
+
         }
+        public DbSet<HS_HZXX> HS_HZXX { get; set; }
     }
 }
