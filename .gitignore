@@ -19,3 +19,6 @@
 /BlazorIdentityServer/BlazorIdentityServer.Client/obj
 /BlazorIdentityServer/BlazorIdentityServer.Server/bin/Debug/net5.0
 /BlazorIdentityServer/BlazorIdentityServer.Server/obj
+/Blazor_NPOI_Excel/.vs/Blazor_NPOI_Excel
+/Blazor_NPOI_Excel/Blazor_NPOI_Excel/bin/Debug/net5.0
+/Blazor_NPOI_Excel/Blazor_NPOI_Excel/obj
