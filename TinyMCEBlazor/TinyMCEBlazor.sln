@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyMCEBlazor.Server", "TinyMCEBlazor\Server\TinyMCEBlazor.Server.csproj", "{49BCA632-D91B-4928-A489-1DC7E073A0E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TinyMCEBlazor.Server", "TinyMCEBlazor\Server\TinyMCEBlazor.Server.csproj", "{49BCA632-D91B-4928-A489-1DC7E073A0E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyMCEBlazor.Client", "TinyMCEBlazor\Client\TinyMCEBlazor.Client.csproj", "{73C4449D-7B2E-4D36-89C0-8D961B67DB50}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TinyMCEBlazor.Client", "TinyMCEBlazor\Client\TinyMCEBlazor.Client.csproj", "{73C4449D-7B2E-4D36-89C0-8D961B67DB50}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyMCEBlazor.Shared", "TinyMCEBlazor\Shared\TinyMCEBlazor.Shared.csproj", "{C4080EF1-28BF-4DDA-90DF-598A456A23EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TinyMCEBlazor.Shared", "TinyMCEBlazor\Shared\TinyMCEBlazor.Shared.csproj", "{C4080EF1-28BF-4DDA-90DF-598A456A23EC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
