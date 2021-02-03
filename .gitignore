@@ -22,3 +22,7 @@
 /Blazor_NPOI_Excel/.vs/Blazor_NPOI_Excel
 /Blazor_NPOI_Excel/Blazor_NPOI_Excel/bin/Debug/net5.0
 /Blazor_NPOI_Excel/Blazor_NPOI_Excel/obj
+/TinyMCEBlazor/.vs/TinyMCEBlazor
+/TinyMCEBlazor/TinyMCEBlazor/Client/obj
+/TinyMCEBlazor/TinyMCEBlazor/Server/obj
+/TinyMCEBlazor/TinyMCEBlazor/Shared/obj
