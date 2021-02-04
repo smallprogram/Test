@@ -26,3 +26,6 @@
 /TinyMCEBlazor/TinyMCEBlazor/Client/obj
 /TinyMCEBlazor/TinyMCEBlazor/Server/obj
 /TinyMCEBlazor/TinyMCEBlazor/Shared/obj
+/TinyMCEBlazor/TinyMCEBlazor/Client/bin/Debug/net5.0
+/TinyMCEBlazor/TinyMCEBlazor/Server/bin/Debug/net5.0
+/TinyMCEBlazor/TinyMCEBlazor/Shared/bin/Debug/net5.0

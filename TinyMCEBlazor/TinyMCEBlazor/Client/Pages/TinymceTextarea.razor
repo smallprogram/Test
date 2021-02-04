@@ -1,11 +1,17 @@
-﻿
+﻿@page "/Tinymcetest"
+@inject IJSRuntime jSRuntime
 
 
 <h3>TinymceTextarea</h3>
 
-<textarea id="@Id" @bind-value="Value" @bind-value:event="onchange" />
-
+@*<textarea id="@Id" @bind-value="Value" @bind-value:event="onchange" />*@
+<textarea id="testtinymce"></textarea>
 
 @code {
 
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        jSRuntime.InvokeVoidAsync("init_tinymce", "#testtinymce");
+        return base.OnAfterRenderAsync(firstRender);
+    }
 }
