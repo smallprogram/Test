@@ -1,0 +1,63 @@
+﻿@page "/"
+@inject MessageService _message
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+<Button Type="primary">Hello World!</Button>
+<SurveyPrompt Title="How is Blazor working for you?" />
+<div>
+    <Progress StrokeColor=_gradients Percent=99.9 />
+    <Progress StrokeColor=_gradients Percent=@num Status=ProgressStatus.Active />
+    <Progress Type=ProgressType.Circle StrokeColor=_gradients Percent=90 />
+    <Progress Type=ProgressType.Circle StrokeColor=_gradients Percent=100 />
+</div>
+
+<Button @onclick="test" Type="primary">点我</Button>
+<Button @onclick="test1" Type="primary">清空</Button>
+
+
+<div>
+    <Carousel Autoplay="TimeSpan.FromSeconds(2)">
+        <CarouselSlick>
+            <img src="img/1.jpg"/>
+        </CarouselSlick>
+        <CarouselSlick>
+            <img src="img/2.jpg" />
+        </CarouselSlick>
+        <CarouselSlick>
+            <img src="img/3.jpg" />
+        </CarouselSlick>
+        <CarouselSlick>
+            <img src="img/4.jpg" />
+        </CarouselSlick>
+    </Carousel>
+</div>
+
+@code{
+    private double num = 0;
+
+    private Dictionary<string, string> _gradients = new()
+    {
+        { "0%", "#108ee9" },
+        { "100%", "#87d068" }
+    };
+
+    public void test()
+    {
+
+        if (num > 99.9)
+        {
+            _message.Info("别点了，满了！");
+        }
+        else
+        {
+            num += 0.8;
+        }
+    }
+    public void test1()
+    {
+
+        num = 0.0;
+    }
+}
