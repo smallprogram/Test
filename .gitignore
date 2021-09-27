@@ -38,3 +38,10 @@
 /BlazorWASM_AntDesign/BlazorWASM_AntDesign/Server/obj
 /BlazorWASM_AntDesign/BlazorWASM_AntDesign/Shared/bin/Debug/net5.0
 /BlazorWASM_AntDesign/BlazorWASM_AntDesign/Shared/obj
+/BlazorServerCoutomIdentity/.vs/BlazorServerCoutomIdentity
+/BlazorServerCoutomIdentity/BlazorServerCoutomIdentity/obj
+/BlazorServerCustomIdentity/.vs/BlazorServerCustomIdentity/v16
+/BlazorServerCustomIdentity/BlazorServerCustomIdentity/obj
+/BlazorServerWithIdentity/.vs/BlazorServerWithIdentity/v16
+/BlazorServerWithIdentity/BlazorServerWithIdentity/obj
+/BlazorServerWithIdentity/BlazorServerWithIdentity/bin/Debug/net5.0
