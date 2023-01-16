@@ -1,0 +1,95 @@
+#
+# Copyright (c) 2022-2023 SMALLPROGRAM <https://github.com/smallprogram/OpenWrtAction>
+#
+# This is free software, licensed under the MIT License.
+# See /LICENSE for more information.
+#
+# https://github.com/smallprogram/OpenWrtAction
+# Description: Build OpenWrt using GitHub Actions
+#
+
+name: Build-OpenWrt_Multi-Platform
+
+on:
+  repository_dispatch:
+  workflow_dispatch:
+    inputs:
+      ssh:
+        description: 'SSH connection to Actions'
+        required: false
+        default: 'false'
+  # schedule:
+  #   - cron: 0 */8 * * *
+
+env:
+  REPO_URL: https://github.com/coolsnowwolf/lede
+  REPO_BRANCH: master
+  FEEDS_CONF: feeds_config/custom.feeds.conf.default
+  DIY_P1_SH: diy_script/diy-part1.sh
+  DIY_P2_SH: diy_script/diy-part2.sh
+  COMMIT_LOG_NUM: 1
+  UPLOAD_BIN_DIR: false
+  UPLOAD_FIRMWARE: true
+  UPLOAD_RELEASE: true
+  TZ: Asia/Shanghai
+
+jobs:
+
+  job_init: 
+    runs-on: ubuntu-latest
+    outputs:
+      output_release_tag: ${{ steps.gen_release_tag.outputs.release_tag }}
+    steps:
+      - id: gen_release_tag
+        run: echo "release_tag=multi-platform_$(date +"%Y.%m.%d_%H%M")" >> $GITHUB_OUTPUT
+
+  job_build:
+    needs: job_init
+    runs-on: ubuntu-latest
+    name: Build-OpenWrt-${{ matrix.platforms }}
+    strategy:
+      fail-fast: false
+      matrix:
+        platforms: [X86, R5S, R4S, R2S, R2C, Pi4_Model_B]
+
+    outputs:
+      X86_IsCompilationSuccessful: ${{ steps.gen_release_tag.outputs.X86_IsCompilationSuccessful }}
+      R5S_IsCompilationSuccessful: ${{ steps.gen_release_tag.outputs.R5S_IsCompilationSuccessful }}
+      R4S_IsCompilationSuccessful: ${{ steps.gen_release_tag.outputs.R4S_IsCompilationSuccessful }}
+      R2S_IsCompilationSuccessful: ${{ steps.gen_release_tag.outputs.R2S_IsCompilationSuccessful }}
+      R2C_IsCompilationSuccessful: ${{ steps.gen_release_tag.outputs.R2C_IsCompilationSuccessful }}
+      Pi4_Model_B_IsCompilationSuccessful: ${{ steps.gen_release_tag.outputs.Pi4_Model_B_IsCompilationSuccessful }}
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@main
+      
+
+    - name: Initialization environment
+      id: Initialization
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+        echo "status=success" >> $GITHUB_OUTPUT
+        echo "${{ matrix.platforms }}_IsCompilationSuccessful=failed"
+
+    - name: Gen output success
+      if: steps.Initialization.outputs.status == 'success'
+      run: |
+        echo "${{ matrix.platforms }}_IsCompilationSuccessful=success"
+
+    - name: Gen output failed
+      if: steps.Initialization.outputs.status != 'success'
+      run: |
+        echo "${{ matrix.platforms }}_IsCompilationSuccessful=failed"
+
+  job_release-messages:
+    if: ${{ always() }}
+    needs: [job_init, job_build]
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Print Matrix Result
+      run: |
+        echo ${{ toJSON(needs) }}
+       
