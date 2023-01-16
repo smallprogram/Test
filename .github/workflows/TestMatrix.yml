@@ -53,12 +53,12 @@ jobs:
         platforms: [X86, R5S, R4S, R2S, R2C, Pi4_Model_B]
 
     outputs:
-      X86_IsCompilationSuccessful: ${{ steps.gen_release_tag.outputs.X86_IsCompilationSuccessful }}
-      R5S_IsCompilationSuccessful: ${{ steps.gen_release_tag.outputs.R5S_IsCompilationSuccessful }}
-      R4S_IsCompilationSuccessful: ${{ steps.gen_release_tag.outputs.R4S_IsCompilationSuccessful }}
-      R2S_IsCompilationSuccessful: ${{ steps.gen_release_tag.outputs.R2S_IsCompilationSuccessful }}
-      R2C_IsCompilationSuccessful: ${{ steps.gen_release_tag.outputs.R2C_IsCompilationSuccessful }}
-      Pi4_Model_B_IsCompilationSuccessful: ${{ steps.gen_release_tag.outputs.Pi4_Model_B_IsCompilationSuccessful }}
+      X86_IsCompilationSuccessful: ${{ steps.gos.outputs.X86_IsCompilationSuccessful }}
+      R5S_IsCompilationSuccessful: ${{ steps.gos.outputs.R5S_IsCompilationSuccessful }}
+      R4S_IsCompilationSuccessful: ${{ steps.gos.outputs.R4S_IsCompilationSuccessful }}
+      R2S_IsCompilationSuccessful: ${{ steps.gos.outputs.R2S_IsCompilationSuccessful }}
+      R2C_IsCompilationSuccessful: ${{ steps.gos.outputs.R2C_IsCompilationSuccessful }}
+      Pi4_Model_B_IsCompilationSuccessful: ${{ steps.gos.outputs.Pi4_Model_B_IsCompilationSuccessful }}
 
     steps:
     - name: Checkout
@@ -74,14 +74,15 @@ jobs:
         echo "${{ matrix.platforms }}_IsCompilationSuccessful=failed" >> $GITHUB_OUTPUT
 
     - name: Gen output success
+      id: gos
       if: steps.Initialization.outputs.status == 'success'
       run: |
         echo "${{ matrix.platforms }}_IsCompilationSuccessful=success" >> $GITHUB_OUTPUT
 
-    - name: Gen output failed
-      if: steps.Initialization.outputs.status != 'success'
-      run: |
-        echo "${{ matrix.platforms }}_IsCompilationSuccessful=failed" >> $GITHUB_OUTPUT
+    # - name: Gen output failed
+    #   if: steps.Initialization.outputs.status != 'success'
+    #   run: |
+    #     echo "${{ matrix.platforms }}_IsCompilationSuccessful=failed" >> $GITHUB_OUTPUT
 
   job_release-messages:
     if: ${{ always() }}
@@ -92,4 +93,5 @@ jobs:
     - name: Print Matrix Result
       run: |
         echo ${{ toJSON(needs) }}
+        echo ${{ toJSON(needs.job_build.outputs) }}
        
