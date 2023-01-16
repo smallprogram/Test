@@ -77,21 +77,23 @@ jobs:
       id: gos
       if: steps.Initialization.outputs.status == 'success'
       run: |
-        echo "${{ matrix.platforms }}_IsCompilationSuccessful=success" >> $GITHUB_OUTPUT
-
-    # - name: Gen output failed
-    #   if: steps.Initialization.outputs.status != 'success'
-    #   run: |
-    #     echo "${{ matrix.platforms }}_IsCompilationSuccessful=failed" >> $GITHUB_OUTPUT
+        if[ ${{ matrix.platforms }} == X86 ]; then echo "${{ matrix.platforms }}_IsCompilationSuccessful=faile" >> $GITHUB_OUTPUT; else echo "${{ matrix.platforms }}_IsCompilationSuccessful=success" >> $GITHUB_OUTPUT; fi;
 
   job_release-messages:
+    runs-on: ubuntu-latest
     if: ${{ always() }}
     needs: job_build
-    runs-on: ubuntu-latest
     
     steps:
     - name: Print Matrix Result
       run: |
         echo ${{ toJSON(needs) }}
         echo ${{ toJSON(needs.job_build.outputs) }}
+        echo "Result ${{ needs.job_build.outputs.X86_IsCompilationSuccessful }}"
+        echo "Result ${{ needs.job_build.outputs.R5S_IsCompilationSuccessful }}"
+        echo "Result ${{ needs.job_build.outputs.R4S_IsCompilationSuccessful }}"
+        echo "Result ${{ needs.job_build.outputs.R2S_IsCompilationSuccessful }}"
+        echo "Result ${{ needs.job_build.outputs.X86_IsCompilationSuccessful }}"
+        echo "Result ${{ needs.job_build.outputs.R2C_IsCompilationSuccessful }}"
+        echo "Result ${{ needs.job_build.outputs.Pi4_Model_B_IsCompilationSuccessful }}"
        
