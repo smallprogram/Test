@@ -71,21 +71,21 @@ jobs:
         DEBIAN_FRONTEND: noninteractive
       run: |
         echo "status=success" >> $GITHUB_OUTPUT
-        echo "${{ matrix.platforms }}_IsCompilationSuccessful=failed"
+        echo "${{ matrix.platforms }}_IsCompilationSuccessful=failed" >> $GITHUB_OUTPUT
 
     - name: Gen output success
       if: steps.Initialization.outputs.status == 'success'
       run: |
-        echo "${{ matrix.platforms }}_IsCompilationSuccessful=success"
+        echo "${{ matrix.platforms }}_IsCompilationSuccessful=success" >> $GITHUB_OUTPUT
 
     - name: Gen output failed
       if: steps.Initialization.outputs.status != 'success'
       run: |
-        echo "${{ matrix.platforms }}_IsCompilationSuccessful=failed"
+        echo "${{ matrix.platforms }}_IsCompilationSuccessful=failed" >> $GITHUB_OUTPUT
 
   job_release-messages:
     if: ${{ always() }}
-    needs: [job_init, job_build]
+    needs: job_build
     runs-on: ubuntu-latest
     
     steps:
